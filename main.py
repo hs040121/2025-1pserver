@@ -25,13 +25,14 @@ async def root():
 
 @app.get("/predict")
 async def predict():
-    pred = model.predict_species(5.0,3.4,1.4,0.2)
+    pred, prob = model.predict_species(5.0,3.4,1.4,0.2)
     return {"prediction":pred}
 
 @app.post("/predict")
 async def predict_species(iris:IrisSpecies):
     pred = model.predict_species(iris.sepal_length,iris.sepal_width,iris.petal_length,iris.petal_width)
-    return {"prediction":pred}
+    prob = 0.77
+    return {"prediction":pred, "probability":prob}
 
 if __name__== '__main__':
     uvicorn.run(app, host='127.0.0.1', port=8000)
