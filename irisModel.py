@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 import joblib
+from pydantic import BaseModel
 from sklearn.ensemble import RandomForestClassifier
 
 
-class IrisSpecies():
+class IrisSpecies(BaseModel):
     sepal_length: float
     sepal_width: float
     petal_length: float
