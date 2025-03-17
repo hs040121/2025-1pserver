@@ -1,56 +1,32 @@
-<!DOCTYPE html>
-<html>
+function Send(){
 
-<head>
-    <title>iris classifier</title>
+sl = document.getElementById("sl")
+sw = document.getElementById("sw")
+pl = document.getElementById("pl")
+pw = document.getElementById("pw")
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script     src="https://code.jquery.com/jquery-3.7.1.js" ></script>
-    <script src="iris.js"></script>
-</head>
+  var data = {
+    'sepal_length': sl.value,
+    'sepal_width': sw.value,
+    'petal_length': pl.value,
+    'petal_width': pw.value,
+  }
 
-<body>
+    $.ajax({
+    type: "POST",
+    url: "http://localhost:8000/predict",
+    headers:{
+        "Accept" : "application/json",
+        "Content-Type": "application/json",
+        },
 
-		<h1> 붓꽃 감별기 </h1>
-    <div class="container">
-        <h2>붓꽃의 수치를 넣어 보세요</h2>
-        <form class="form-horizontal" action="#" >
+        data:JSON.stringify(data),
+        }).done(function(response){
+            console.log(response)
+            txtOut.value = response.prediction
+        }).fail(function(response){
+            alert("fail"+response)
+        }
+        ).always()
+    }
 
-          <div class="form-group">
-            <label class="control-label col-sm-2" >꽃밭침길이:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value=1 id="sl" >
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" >꽃밭침넓이:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value = 2 id="sw" >
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" >꽃잎길이:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value =3 id="pl" >
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" >꽃잎넓이:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value=7 id="pw" >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default" onclick="Send()">Submit</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    <textarea id="txtOut" rows="2" style="margin-top: 10px; width: 100%;"
-    placeholder="Output"></textarea>
-
-</body>
-</html>
